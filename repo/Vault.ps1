@@ -1,46 +1,3 @@
-﻿##################################################################################################
-##################################################################################################
-#Tries to locate a KeePass DB in Documents\. If none exist, it then checks Program Files\
-$DBPath = [environment]::getfolderpath("mydocuments")
-$VaultDB = Get-ChildItem -Path "$DBPath\*" -Include *.kdbx -Recurse
-$DBCount = $VaultDB.Count
-
-if ($DBCount -eq "1") {
-    $VaultDB = "$VaultDB"
-}
-elseif ($DBCount -eq "0") {
-    $DBPath = $env:ProgramFiles
-    $VaultDB = Get-ChildItem -Path "$DBPath\*" -Include *.kdbx -Recurse
-    $DBCount = $VaultDB.Count
-
-    if ($DBCount -eq "1") {
-        $VaultDB = "$VaultDB"
-    }
-}
-
-#NOTE: $env:ProgramFiles shows as 'Program Files (x86)\' when using 32-bit PowerShell; this will cause issues if it's run on 64-bit Windows & KeePass is installed under 'Program Files\'
-#Locates a KeePass.exe instance in either Program Files\ or Program Files(x86)\
-$EXEPath = $env:ProgramFiles
-$VaultEXE = Get-ChildItem -Path "$EXEPath\*" -Include KeePass.exe -Recurse
-$EXECount = $VaultEXE.Count
-
-if ($EXECount -eq "1") {
-    $VaultEXE = "$VaultEXE"
-}
-elseif ($EXECount -eq "0") {
-    $EXEPath = ${env:ProgramFiles(x86)}
-    $VaultEXE = Get-ChildItem -Path "$EXEPath\*" -Include KeePass.exe -Recurse
-    $EXECount = $VaultEXE.Count
-
-    if ($EXECount -eq "1") {
-        $VaultEXE = "$VaultEXE"
-    }
-}
-
-##################################################################################################
-##################################################################################################
-
-
 #Converts SecureString to cleartext
 Function Convert-SecureStringToPlaintext ($SecureString) {
     [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureString))
@@ -75,9 +32,51 @@ Function Search-KeePass {
 #Loads and runs search of KeePass, returns creds as PSCredential object 
 Function Open-KeePass {   
 	[CmdletBinding()]
-		Param(
-			[Parameter(Mandatory=$true)] [String] $VaultTitle
-		)
+	Param(
+		[Parameter(Mandatory=$true)] [String] $VaultTitle
+	)
+
+    try {
+        #Tries to locate a KeePass DB in Documents\. If none exist, it then checks Program Files\
+        $DBPath = [environment]::getfolderpath("mydocuments")
+        $VaultDB = Get-ChildItem -Path "$DBPath\*" -Include *.kdbx -Recurse -ErrorAction SilentlyContinue
+        $DBCount = $VaultDB.Count
+
+        if ($DBCount -eq "1") {
+            $VaultDB = "$VaultDB"
+        }
+        elseif ($DBCount -eq "0") {
+            $DBPath = $env:ProgramFiles
+            $VaultDB = Get-ChildItem -Path "$DBPath\*" -Include *.kdbx -Recurse -ErrorAction SilentlyContinue
+            $DBCount = $VaultDB.Count
+
+            if ($DBCount -eq "1") {
+                $VaultDB = "$VaultDB"
+            }
+        }
+
+        #Locates a KeePass.exe instance in either Program Files\ or Program Files(x86)\
+        #NOTE: $env:ProgramFiles shows as 'Program Files (x86)\' when using 32-bit PowerShell; this will cause issues if it's run on 64-bit Windows & KeePass is installed under 'Program Files\'
+        $EXEPath = $env:ProgramFiles
+        $VaultEXE = Get-ChildItem -Path "$EXEPath\*" -Include KeePass.exe -Recurse -ErrorAction SilentlyContinue
+        $EXECount = $VaultEXE.Count
+
+        if ($EXECount -eq "1") {
+            $VaultEXE = "$VaultEXE"
+        }
+        elseif ($EXECount -eq "0") {
+            $EXEPath = ${env:ProgramFiles(x86)}
+            $VaultEXE = Get-ChildItem -Path "$EXEPath\*" -Include KeePass.exe -Recurse -ErrorAction SilentlyContinue
+            $EXECount = $VaultEXE.Count
+
+            if ($EXECount -eq "1") {
+                $VaultEXE = "$VaultEXE"
+            }
+        }
+    }
+    catch {
+        throw $_.Exception.Message
+    }
     [Reflection.Assembly]::LoadFile($VaultEXE) | Out-Null
     $Vault = New-Object -TypeName KeePassLib.PwDatabase
     $VaultStatus = New-Object KeePassLib.Interfaces.NullStatusLogger
