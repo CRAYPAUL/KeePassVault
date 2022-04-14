@@ -35,7 +35,6 @@ Function Open-KeePass {
 	Param(
 		[Parameter(Mandatory=$true)] [String] $VaultTitle
 	)
-
     try {
         #Tries to locate a KeePass DB in Documents\. If none exist, it then checks Program Files\
         $DBPath = [environment]::getfolderpath("mydocuments")
@@ -54,7 +53,6 @@ Function Open-KeePass {
                 $VaultDB = "$VaultDB"
             }
         }
-
         #Locates a KeePass.exe instance in either Program Files\ or Program Files(x86)\
         #NOTE: $env:ProgramFiles shows as 'Program Files (x86)\' when using 32-bit PowerShell; this will cause issues if it's run on 64-bit Windows & KeePass is installed under 'Program Files\'
         $EXEPath = $env:ProgramFiles
