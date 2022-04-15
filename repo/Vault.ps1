@@ -70,12 +70,6 @@ Function Open-KeePass {
 }
 
 
-#Converts SecureString to cleartext
-Function Convert-SecureStringToPlaintext ($SecureString) {
-    [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureString))
-}
-
-
 #Pulls creds from KeePass DB entry as PSCredential object
 Function Search-KeePass {
     [CmdletBinding()]
@@ -98,4 +92,10 @@ Function Search-KeePass {
     $Entry = New-Object System.Management.Automation.PSCredential($DBUsername, $DBPassword)
     Remove-Variable -Name "DB*"
     return $Entry
+}
+
+
+#Converts SecureString to cleartext
+Function Convert-SecureStringToPlaintext ($SecureString) {
+    [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureString))
 }
