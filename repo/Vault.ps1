@@ -9,15 +9,15 @@ Function Open-KeePass {
         $DBPath = [environment]::getfolderpath("mydocuments")
         $VaultDB = Get-ChildItem -Path "$DBPath\*" -Include *.kdbx -Recurse -ErrorAction SilentlyContinue
         $DBCount = $VaultDB.Count
-        if ($DBCount -eq "1") {
+        if ($DBCount -eq 1) {
             $VaultDB = "$VaultDB"
         }
-        elseif ($DBCount -eq "0") {
+        elseif ($DBCount -eq 0) {
             $DBPath = $env:ProgramFiles
             $VaultDB = Get-ChildItem -Path "$DBPath\*" -Include *.kdbx -Recurse -ErrorAction SilentlyContinue
             $DBCount = $VaultDB.Count
 
-            if ($DBCount -eq "1") {
+            if ($DBCount -eq 1) {
                 $VaultDB = "$VaultDB"
             }
         }
@@ -27,15 +27,15 @@ Function Open-KeePass {
         $EXEPath = $env:ProgramFiles
         $VaultEXE = Get-ChildItem -Path "$EXEPath\*" -Include KeePass.exe -Recurse -ErrorAction SilentlyContinue
         $EXECount = $VaultEXE.Count
-        if ($EXECount -eq "1") {
+        if ($EXECount -eq 1) {
             $VaultEXE = "$VaultEXE"
         }
-        elseif ($EXECount -eq "0") {
+        elseif ($EXECount -eq 0) {
             $EXEPath = ${env:ProgramFiles(x86)}
             $VaultEXE = Get-ChildItem -Path "$EXEPath\*" -Include KeePass.exe -Recurse -ErrorAction SilentlyContinue
             $EXECount = $VaultEXE.Count
 
-            if ($EXECount -eq "1") {
+            if ($EXECount -eq 1) {
                 $VaultEXE = "$VaultEXE"
             }
         }
