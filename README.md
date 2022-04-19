@@ -9,7 +9,7 @@ Import-Module KeePassVault
 
 
 #You may need to enable script execution for the session; If so, use the following command:
-#Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 
 ```
 
