@@ -8,7 +8,7 @@ Make sure this module is placed in one of the PowerShell module paths. These loc
 Import-Module KeePassVault
 
 
-#You may need to enable script execution for the session. If you this happens, use the following command:
+#You may need to enable script execution for the session; If so, the following command:
 #Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 
 ```
