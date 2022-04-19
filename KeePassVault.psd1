@@ -13,5 +13,4 @@
 		'Convert-SecureStringToPlaintext',
 		'Open-KeePass'
     )
-    
 }
