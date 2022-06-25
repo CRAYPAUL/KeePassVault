@@ -16,6 +16,6 @@ $Public = Get-ChildItem -Path $PSScriptRoot\repo\*.ps1
     }
 }
 
-$global:VaultEXE = Get-ChildItem -Path $PSScriptRoot\bin\KeePassPackage2.50\KeePass.exe
+$global:VaultEXE = Get-ChildItem -Path $PSScriptRoot\repo\KeePassPackage2.50\KeePass.exe
 [Reflection.Assembly]::LoadFile($VaultEXE) | Out-Null
 Import-VaultLocation
