@@ -40,10 +40,10 @@ Function Search-KeePass {
     $DBEntry = @( $DBGroup[0].GetEntries($True) | Where { $_.Strings.ReadSafe("Title") -eq $Title } )
     [int]$DBEntryCount = $DBEntry.Count
     if ($DBEntryCount -eq 0) { 
-        throw "ERROR: Entry '$DBTitle' was not found." 
+        throw "ERROR: Entry '$Title' was not found." 
     }
     elseif ($DBEntryCount -gt 1) {
-        throw "`nERROR: Multiple entries named '$DBTitle'."
+        throw "`nERROR: Multiple entries named '$Title'."
     }
     [string] $DBUsername = $DBEntry[0].Strings.ReadSafe("UserName")
     $DBPassword = ConvertTo-SecureString -String ($DBEntry[0].Strings.ReadSafe("Password")) -AsPlainText -Force
