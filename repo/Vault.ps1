@@ -2,7 +2,7 @@
 Function Open-KeePass {   
 	[CmdletBinding()]
 	Param(
-		[Parameter(Mandatory=$true)] [String] $VaultTitle
+		[Parameter(Mandatory=$true)] [String] $EntryTitle
 	)   
     try {
         $Vault = New-Object -TypeName KeePassLib.PwDatabase
@@ -16,7 +16,7 @@ Function Open-KeePass {
 		$VaultKey.AddUserKey($KcpPassword) | Remove-Variable -Name "*Password"
 		
 		$Vault.Open($VaultIOConnection, $VaultKey, $VaultStatus)
-        $Credentials = Search-KeePass -DBVault $Vault -Group General -Title $VaultTitle
+        $Credentials = Search-KeePass -DBVault $Vault -Group General -Title $EntryTitle
     }
     catch {
         $Vault.Close()
