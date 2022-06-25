@@ -16,6 +16,6 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 Once imported, you can access an entry with the following command:
 
 ```
-Open-KeePass -VaultTitle <Title>
+Open-KeePass -EntryTitle <Title>
 
 ```
