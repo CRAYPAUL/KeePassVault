@@ -10,7 +10,6 @@
     CmdletsToExport      = @()
     AliasesToExport      = @()
     FunctionsToExport    = @(
-		'Convert-SecureStringToPlaintext',
 		'Open-KeePass'
     )
 }
