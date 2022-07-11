@@ -10,7 +10,6 @@
     CmdletsToExport      = @()
     AliasesToExport      = @()
     FunctionsToExport    = @(
-    
 		'Open-KeePass'
     )
 }
