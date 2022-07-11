@@ -46,8 +46,12 @@ Function Search-KeePass {
         throw "`nERROR: Multiple entries named '$Title'."
     }
     [string] $DBUsername = $DBEntry[0].Strings.ReadSafe("UserName")
-    $DBPassword = ConvertTo-SecureString -String ($DBEntry[0].Strings.ReadSafe("Password")) -AsPlainText -Force
-    $Entry = New-Object System.Management.Automation.PSCredential($DBUsername, $DBPassword)
+    $DBSecureString = ConvertTo-SecureString -String ($DBEntry[0].Strings.ReadSafe("Password")) -AsPlainText -Force
+	$DBPassword = Convert-SecureStringToPlaintext $DBSecureString
+    $Entry = [PSCustomObject]@{
+		Username = $DBUsername 
+		Password = $DBPassword
+	}
     Remove-Variable -Name "DB*"
     return $Entry
 }
